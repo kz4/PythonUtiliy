@@ -3,11 +3,11 @@ import io
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
   
-def add_page_number(page_number, pageObj): 
+def add_page_number(page_number, pageObj, totalPages): 
     packet = io.BytesIO()
     # create a new PDF with Reportlab
     can = canvas.Canvas(packet, pagesize=letter)
-    can.drawString(300, 10, "-- " + page_number + " --")
+    can.drawString(300, 5, "Page " + page_number + " of " + totalPages)
     can.save()
 
     # move to the beginning of the StringIO buffer
@@ -36,7 +36,7 @@ def main():
     with pdfFileWithPageNumObj as output_file:
         # adding page number to each page
         for page in range(pdfReader.numPages): 
-            wmpageObj = add_page_number(str(page + 1), pdfReader.getPage(page))           
+            wmpageObj = add_page_number(str(page + 1), pdfReader.getPage(page), str(pdfReader.numPages))           
             pdfWriter.addPage(wmpageObj) 
             pdfWriter.write(pdfFileWithPageNumObj)
   
